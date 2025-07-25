@@ -1,7 +1,26 @@
 import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+// Connect to MongoDB
+const mongoURI = process.env.MONGO_URI ;
+const PORT = process.env.PORT || 3000;
+
+if (!mongoURI) {
+  console.error('MONGO_URI is not defined in the environment variables.');
+  process.exit(1);
+}
+mongoose.connect(mongoURI, {
+}).then(() => {
+  console.log('Connected to MongoDB');
+  }).catch(err => {
+  console.error('MongoDB connection error:', err);
+});
 
 const app = express();
 
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+app.listen(PORT, () => {
+  console.log('Server is running on port', PORT); 
 });
