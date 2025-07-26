@@ -51,7 +51,7 @@ export default function SignUp() {
             <span className='text-black text-4xl ml-2' >Blog</span>
           </Link>
           <p className='text-sm mt-5'>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, perferendis?
+            You can sign up here to create a new account. Please fill in your username, email, and password to get started.
           </p>
         </div>
 
