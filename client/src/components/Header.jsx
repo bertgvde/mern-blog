@@ -13,7 +13,7 @@ export default function Header() {
     const location = useLocation();
     const navigate = useNavigate();
     const {currentUser} = useSelector(state => state.user);
-    // const { theme } = useSelector((state) => state.theme);
+    const { theme } = useSelector((state) => state.theme);
     const dispatch = useDispatch();
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -65,13 +65,13 @@ export default function Header() {
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
         </form>
-        <Button className='sm:lg lg:hidden py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-3xl border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700' pill >
+        <Button className='lg:hidden w-12' color='gray'>
             <AiOutlineSearch />
-        </Button>
+      </Button>
         <div className='flex gap-2 md:order-2'>
-            {/* <Button className='hidden sm:inline py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-3xl border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700' pill onClick={() => (toggleTheme())}>
-                {theme === 'light' ? <FaSun /> : <FaMoon />}
-            </Button> */}
+            <Button className='w-12 h-10 hidden sm:inline' onClick={() => dispatch(toggleTheme())}>
+                {theme === 'light' ? <FaMoon /> : <FaSun />}
+            </Button>
             {currentUser ? (
             <Dropdown
                 arrowIcon={false}
