@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
+import OAuth from '../components/OAuth';
 
 export default function SignIn() {
     const [formData, setFormData] = useState({});
@@ -58,16 +59,16 @@ export default function SignIn() {
         {/* right */}
         <div className='flex-1'>
             <form className="flex max-w-md flex-col gap-4" onSubmit={handleSubmit}>
-              <div class="relative">
+              <div className="relative">
                   <TextInput type="email" id="email" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="user1@email.com" onChange={handleChange}/>
                   <label for="email" className="absolute text-sm text-blue-700 dark:text-blue-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-blue-900 dark:bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Your email</label>
               </div>
-              <div class="relative">
+              <div className="relative">
                   <TextInput type="password" id="password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="**********" onChange={handleChange}/>
-                  <label for="password" class="absolute text-sm text-blue-700 dark:text-blue-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-blue-900 dark:bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Password</label>
+                  <label for="password" className="absolute text-sm text-blue-700 dark:text-blue-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-blue-900 dark:bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Password</label>
               </div>
 
-              <Button type="submit" className='bg-inherit dark:text-black' disabled={loading}>                               
+              <Button type="submit" className='bg-blue-400 dark:text-black' disabled={loading}>                               
                   {loading ? (
                     <>
                     <Spinner size='sm' />
@@ -75,10 +76,11 @@ export default function SignIn() {
                   </>
                 ) : 'Sign In'}              
               </Button>
+              <OAuth />
           </form>
           <div className='flex gap-3 text-sm mt-5'>
             
-            <span className=''>No account yer? </span>
+            <span className=''>No account? </span>
             <Link to="/sign-up" className='text-blue-500 hover:underline dark:text-blue-700'>
               Sign up
             </Link>
