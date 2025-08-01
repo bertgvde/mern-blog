@@ -4,30 +4,33 @@ import { errorHandler } from '../utils/error.js';
 import jwt from 'jsonwebtoken';
 
 export const signup = async (req, res, next) => {
-    const { username, password, email } = req.body;
-    try {
-        if (!username || !password || !email || username.trim() === '' || password.trim() === '' || email.trim() === '') {
-            next(errorHandler(400, 'Username, password and email are required'));}
-    } catch (error) {
-        next(errorHandler(500, 'Server error'));       
-    }
+  const { username, email, password } = req.body;
 
-    const hashedPassword = bcryptjs.hashSync(password, 10);
-    if (!hashedPassword) {
-        return next(errorHandler(500, 'Error hashing password'));}
+  if (
+    !username ||
+    !email ||
+    !password ||
+    username === '' ||
+    email === '' ||
+    password === ''
+  ) {
+    next(errorHandler(400, 'All fields are required'));
+  }
 
-    const newUser = new User({
-        username,
-        password: hashedPassword,
-        email
-    });
-try {
+  const hashedPassword = bcryptjs.hashSync(password, 10);
+
+  const newUser = new User({
+    username,
+    email,
+    password: hashedPassword,
+  });
+
+  try {
     await newUser.save();
-    res.json({
-        success: true, message: 'User created successfully'})}
-    catch (error) {
-        next(errorHandler(409, 'User already exists'));
-    }
+    res.json('Signup successful');
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const signin = async (req, res, next) => {
@@ -48,7 +51,7 @@ export const signin = async (req, res, next) => {
     }
     const token = jwt.sign(
       { id: validUser._id, isAdmin: validUser.isAdmin },
-      process.env.JWT_SECRET 
+      process.env.JWT_SECRET
     );
 
     const { password: pass, ...rest } = validUser._doc;
@@ -110,4 +113,3 @@ export const google = async (req, res, next) => {
     next(error);
   }
 };
-

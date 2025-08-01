@@ -1,39 +1,40 @@
-import { Button, FloatingLabel, TextInput, Label, Alert, Spinner } from 'flowbite-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
-import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from '../redux/user/userSlice';
 import OAuth from '../components/OAuth';
 
 export default function SignIn() {
-    const [formData, setFormData] = useState({});
-    const {loading, error: errorMessage} = useSelector(state => state.user);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
+  const [formData, setFormData] = useState({});
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
-  if (!formData.email || !formData.password) {
-    return dispatch(signInFailure('Please fill in all the fields'));
-  }
+    if (!formData.email || !formData.password) {
+      return dispatch(signInFailure('Please fill all the fields'));
+    }
     try {
       dispatch(signInStart());
-      const response = await fetch('/api/auth/signin', {
+      const res = await fetch('/api/auth/signin', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      const data = await response.json();
+      const data = await res.json();
       if (data.success === false) {
         dispatch(signInFailure(data.message));
       }
-      if (response.ok) {
+
+      if (res.ok) {
         dispatch(signInSuccess(data));
         navigate('/');
       }
@@ -42,57 +43,72 @@ export default function SignIn() {
     }
   };
   return (
-    <div className='min-h-screen mt-20 bg-inherit dark:text-black'>
-      
+    <div className='min-h-screen mt-20'>
       <div className='flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5'>
         {/* left */}
         <div className='flex-1'>
-          <Link to="/" className='font-bold dark:text-white text-4xl'>
-              <span className='px-2 py-1 bg-gradient-to-r from-blue-900 via-blue-600 to-blue-400 rounded-lg text-4xl text-white'>Quinlan's</span>
-            <span className='text-black text-4xl ml-2' >Blog</span>
+          <Link to='/' className='font-bold dark:text-white text-4xl'>
+            <span className='px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white'>
+              Sahand's
+            </span>
+            Blog
           </Link>
           <p className='text-sm mt-5'>
-            You can sign in with your email and password or with Google.
+            This is a demo project. You can sign in with your email and password
+            or with Google.
           </p>
         </div>
-
         {/* right */}
-        <div className='flex-1'>
-            <form className="flex max-w-md flex-col gap-4" onSubmit={handleSubmit}>
-              <div className="relative">
-                  <TextInput type="email" id="email" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="user1@email.com" onChange={handleChange}/>
-                  <label for="email" className="absolute text-sm text-blue-700 dark:text-blue-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-blue-900 dark:bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Your email</label>
-              </div>
-              <div className="relative">
-                  <TextInput type="password" id="password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="**********" onChange={handleChange}/>
-                  <label for="password" className="absolute text-sm text-blue-700 dark:text-blue-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-blue-900 dark:bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Password</label>
-              </div>
 
-              <Button type="submit" className='bg-blue-400 dark:text-black' disabled={loading}>                               
-                  {loading ? (
-                    <>
-                    <Spinner size='sm' />
-                    <span>Loading...</span>
-                  </>
-                ) : 'Sign In'}              
-              </Button>
-              <OAuth />
+        <div className='flex-1'>
+          <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
+            <div>
+              <Label value='Your email' />
+              <TextInput
+                type='email'
+                placeholder='name@company.com'
+                id='email'
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <Label value='Your password' />
+              <TextInput
+                type='password'
+                placeholder='**********'
+                id='password'
+                onChange={handleChange}
+              />
+            </div>
+            <Button
+              gradientDuoTone='purpleToPink'
+              type='submit'
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Spinner size='sm' />
+                  <span className='pl-3'>Loading...</span>
+                </>
+              ) : (
+                'Sign In'
+              )}
+            </Button>
+            <OAuth />
           </form>
-          <div className='flex gap-3 text-sm mt-5'>
-            
-            <span className=''>No account? </span>
-            <Link to="/sign-up" className='text-blue-500 hover:underline dark:text-blue-700'>
-              Sign up
+          <div className='flex gap-2 text-sm mt-5'>
+            <span>Dont Have an account?</span>
+            <Link to='/sign-up' className='text-blue-500'>
+              Sign Up
             </Link>
           </div>
           {errorMessage && (
-            <Alert color="failure" className="mt-5">
+            <Alert className='mt-5' color='failure'>
               {errorMessage}
-            </Alert>)}
-          
+            </Alert>
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 }
-
